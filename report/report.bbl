@@ -1,0 +1,153 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.9 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\datalist[entry]{nty/global//global/global}
+  \entry{nair2010rectified}{inproceedings}{}
+    \name{author}{2}{}{%
+      {{hash=NV}{%
+         family={Nair},
+         familyi={N\bibinitperiod},
+         given={Vinod},
+         giveni={V\bibinitperiod},
+      }}%
+      {{hash=HGE}{%
+         family={Hinton},
+         familyi={H\bibinitperiod},
+         given={Geoffrey\bibnamedelima E},
+         giveni={G\bibinitperiod\bibinitdelim E\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{NVHGE1}
+    \strng{fullhash}{NVHGE1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{N}
+    \field{sortinithash}{N}
+    \true{singletitle}
+    \field{booktitle}{Proceedings of the 27th international conference on
+  machine learning (ICML-10)}
+    \field{pages}{807\bibrangedash 814}
+    \field{title}{Rectified linear units improve restricted boltzmann machines}
+    \field{year}{2010}
+  \endentry
+
+  \entry{rosenblatt1957perceptron}{book}{}
+    \name{author}{1}{}{%
+      {{hash=RF}{%
+         family={Rosenblatt},
+         familyi={R\bibinitperiod},
+         given={Frank},
+         giveni={F\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Cornell Aeronautical Laboratory}%
+    }
+    \strng{namehash}{RF1}
+    \strng{fullhash}{RF1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \true{singletitle}
+    \field{title}{The perceptron, a perceiving and recognizing automaton
+  Project Para}
+    \field{year}{1957}
+  \endentry
+
+  \entry{rumelhart1986learning}{article}{}
+    \name{author}{3}{}{%
+      {{hash=RDE}{%
+         family={Rumelhart},
+         familyi={R\bibinitperiod},
+         given={David\bibnamedelima E},
+         giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod},
+      }}%
+      {{hash=HGE}{%
+         family={Hinton},
+         familyi={H\bibinitperiod},
+         given={Geoffrey\bibnamedelima E},
+         giveni={G\bibinitperiod\bibinitdelim E\bibinitperiod},
+      }}%
+      {{hash=WRJ}{%
+         family={Williams},
+         familyi={W\bibinitperiod},
+         given={Ronald\bibnamedelima J},
+         giveni={R\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Nature Publishing Group}%
+    }
+    \strng{namehash}{RDEHGEWRJ1}
+    \strng{fullhash}{RDEHGEWRJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \true{singletitle}
+    \field{number}{6088}
+    \field{pages}{533}
+    \field{title}{Learning representations by back-propagating errors}
+    \field{volume}{323}
+    \field{journaltitle}{nature}
+    \field{year}{1986}
+  \endentry
+
+  \entry{xiao2017/online}{online}{}
+    \name{author}{3}{}{%
+      {{hash=XH}{%
+         family={Xiao},
+         familyi={X\bibinitperiod},
+         given={Han},
+         giveni={H\bibinitperiod},
+      }}%
+      {{hash=RK}{%
+         family={Rasul},
+         familyi={R\bibinitperiod},
+         given={Kashif},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=VR}{%
+         family={Vollgraf},
+         familyi={V\bibinitperiod},
+         given={Roland},
+         giveni={R\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{XHRKVR1}
+    \strng{fullhash}{XHRKVR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{X}
+    \field{sortinithash}{X}
+    \true{singletitle}
+    \verb{eprint}
+    \verb cs.LG/1708.07747
+    \endverb
+    \field{title}{Fashion-MNIST: a Novel Image Dataset for Benchmarking Machine
+  Learning Algorithms}
+    \field{eprinttype}{arXiv}
+    \field{eprintclass}{cs.LG}
+    \field{day}{28}
+    \field{month}{08}
+    \field{year}{2017}
+    \warn{\item Can't use 'date' + 'year'}
+  \endentry
+\enddatalist
+\endinput
