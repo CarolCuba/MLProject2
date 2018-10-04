@@ -238,7 +238,9 @@ ReLU(x) =  max(0,x)
 	
 \section{Testando o modelo final no Dataset de Teste}
 
+	O modelo escolhido foi o criado a partir de uma rede com 1 hidden layer com 32 neurônio, 0.3 de learning rate e utilizando ReLU como função de ativação.	Para testar o modelo escolhido no conjunto de teste, nós retreinamos a rede com os mesmos hiperparâmetros mas utilizando todo o conjunto de trainamento. 
 	
+	O resultado final foi bem satisfatório em relação ao da validação, com $0.88$ de precision, $0.88$ de recall e $0.88$ de f1-score. Isso prova que o modelo não foi super treinado (overfitted).
 
 \printbibliography
 
