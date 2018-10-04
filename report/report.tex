@@ -240,7 +240,46 @@ ReLU(x) =  max(0,x)
 
 	O modelo escolhido foi o criado a partir de uma rede com 1 hidden layer com 32 neurônio, 0.3 de learning rate e utilizando ReLU como função de ativação.	Para testar o modelo escolhido no conjunto de teste, nós retreinamos a rede com os mesmos hiperparâmetros mas utilizando todo o conjunto de trainamento. 
 	
-	O resultado final foi bem satisfatório em relação ao da validação, com $0.88$ de precision, $0.88$ de recall e $0.88$ de f1-score. Isso prova que o modelo não foi super treinado (overfitted).
+	O resultado final foi bem satisfatório em relação ao da validação, com $0.88$ de precision, $0.88$ de recall e $0.88$ de f1-score. Isso prova que o modelo não foi super treinado (overfitted). Para identificar quais classes tiveram mais problemas de classificação, geramos uma matriz de confusão e todas as métricas para cada classe individual:
+\[
+\begin{bmatrix}
+    820 & 2   & 9   & 25  & 0   & 2   & 133 & 0   & 9   & 0 \\
+    1   & 974 & 1   & 18  & 0   & 2   & 4   & 0   & 0   & 0 \\
+    13  & 0   & 807 & 14  & 68  & 1   & 95  & 0   & 2   & 0 \\
+    29  & 14  & 9   & 908 & 15  & 1   & 23  & 0   & 1   & 0 \\
+    2   & 0   & 96  & 35  & 754 & 1   & 110 & 0   & 2   & 0 \\
+    0   & 0   & 1   & 1   & 0   & 937 &  0  & 39  & 5   & 17 \\
+    131 & 4   & 70  & 22  & 37  & 0   & 726 & 0   & 10  & 0 \\
+    0   & 0   & 0   & 0   & 0   & 31  & 0   & 919 & 0   & 50 \\
+    3   & 1   & 6   & 3   & 3   & 5   & 13  & 4   & 961 & 1  \\
+    0   & 0   & 0   & 0   & 0   & 13  & 0   & 33  & 2   & 952 \\
+\end{bmatrix}
+\]
+
+\begin{table}[h!]
+ \begin{center}
+  \caption{Precision, Recall e F1-Scores do Conjunto de Testes}
+  \label{table:table3}
+  \begin{tabular}{ |c|c|c|c| }
+   \hline
+   Classe & Precision & Recall & F1-Score\\
+   \hline
+   0 & 0.82 & 0.82 & 0.82 \\
+   1 & 0.97 & 0.98 & 0.98 \\
+   2 & 0.81 & 0.81 & 0.81 \\
+   3 & 0.91 & 0.88 & 0.90 \\
+   4 & 0.75 & 0.86 & 0.80 \\
+   5 & 0.94 & 0.94 & 0.94 \\
+   6 & 0.73 & 0.66 & 0.69 \\
+   7 & 0.92 & 0.92 & 0.92 \\
+   8 & 0.96 & 0.97 & 0.96 \\
+   9 & 0.95 & 0.93 & 0.94 \\
+   \hline
+ \end{tabular}
+ \end{center}
+\end{table}
+	
+	Analisando a matriz e as métricas, faz-se claro que a classe 6 é a classe com mais problemas de classificação, enquanto o classificador se dá muito bem com a classe 1.
 
 \printbibliography
 
