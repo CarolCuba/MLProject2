@@ -35,101 +35,174 @@ l228118@g.unicamp.br}}
 \maketitle
 
 \section{Introdução}	
-	Detecção de doenças em imagens médicas, análise de genômas e análise sentimento em redes sociais são exemplos de problemas atuais que possuem dados tão volumósos e complexos que só podem ser solucionados com o auxílio de ferramentas capazes de extrair padrões significativos desses dados. Atualmente, os algorítmos mais bem sucedidos para essa tarefa são as Redes Neurais Artificiais (ANN, do inglês Artificial Neural Networks).
+
+	O intuito desse projeto é estudar de maneira didática o funcionamento  de algoritmos classificadores, dentre eles: Regressão Logística para multiclasses e Redes Neurais Artificiais. Para tanto, apresentaremos duas versões simples de Redes Neurais e Regressões Logísticas. 
 	
-	O intuito desse projeto é estudar de maneira didática o funcionamento de versões mais simples desse algorítmo. Para tanto, apresentaremos duas versões simples de Redes Neurais e duas versões de Regressões Logísticas. Regressão Logística é o algoritmo que originou a base do funcionamento dos neurônios, por isso sua relação com ANNs.
-	
-	Ambas versões de ambos algorítmos serão testados na base de dados Fashion MNIST. O desafio proposto pela base é, dada uma imagem de vestuário classificá-la em 1 dentre 10 possíveis classes. No decorrer dos testes demonstraremos as dificuldades de seleção dos hiper-parâmetros desses algorítmos, bem como suas performances na base selecionada.
+	As versões de cada algoritmo serão testados na base de dados \textit{Fashion MNIST}. O desafio proposto pela base é, dada uma imagem de vestuário classificá-la em 1 dentre 10 possíveis classes. No decorrer dos testes demonstraremos as dificuldades de seleção dos hiper-parâmetros desses algoritmos, bem como suas performances na base selecionada.
 	
 \section{Conjunto de Dados: Fashion MNIST}
 
-	A Fashion MNIST, proposta por \citeauthor{xiao2017/online} (\citeyear{xiao2017/online}), é uma base criada especialmente para benchmarking de algorítmos de machine learning, como informado pelo próprio autor.
+	A\textit{ Fashion MNIST,} proposta por \citeauthor{xiao2017/online} (\citeyear{xiao2017/online}), é uma base criada especialmente para \textit{benchmarking} de algoritmos de \textit{machine learning}, como informado pelo próprio autor.
 	
-	O desafio é classificar as imagens que a compõe entre 10 posśiveis classes de vestuário, sendo elas: [0] Camiseta ("T-shirt/top"); [1] Calça ("Trouser"); [2] Pullover; [3] Vestido ("Dress"); [4] Casaco ("Coat"); [5] Sandália ("Sandal"); [6] Camisa ("Shirt"); [7] Tênis ("Sneaker"); [8] Bolsa ("Bag"); [10] Bota ("Ankle boot").
+	O desafio é classificar as imagens que a compõe entre 10 possíveis classes de vestuário, sendo elas: [0] Camiseta ("T-shirt/top"); [1] Calça ("Trouser"); [2] Pullover; [3] Vestido ("Dress"); [4] Casaco ("Coat"); [5] Sandália ("Sandal"); [6] Camisa ("Shirt"); [7] Tênis ("Sneaker"); [8] Bolsa ("Bag"); [10] Bota ("Ankle boot").
 	
-	Cada imagem possui 28x28 pixels e são em tons de cinza, ou seja, cada imagem possui um vetor inicial de características de tamanho $28*28*1 = 784$, onde 1 é o número de bandas de uma imagem em escala de cinza.
+	Cada imagem possui 28x28 \textit{pixels} e são em tons de cinza, ou seja, cada imagem possui um vetor inicial de características de tamanho $28*28*1 = 784$, onde 1 é o número de bandas de uma imagem em escala de cinza.
 	
-	A base é composta por 60.000 imagens para treinamento e 10.000 para teste. As imagens de teste só foram utilizadas depois do modelo final ser escolhido. Para escolher esse modelo, testes de validação foram realizados no conjunto de trainamento que, por sua vez, foi dividido com 70\% para treino e 30\% para validação.
+	A base é composta por 60.000 imagens para treinamento e 10.000 para teste. As imagens de teste só foram utilizadas depois do modelo final ser escolhido. Para escolher esse modelo, testes de validação foram realizados no conjunto de treinamento que, por sua vez, foi dividido com 70\% para treino e 30\% para validação.
 	
 \section{Regressão Logística}
 
+Regressão logística é uma técnica estatística muito utilizada na área de Aprendizado de Máquina para resolver problemas de classificação. Ela utiliza a função de \textit{sigmoid} para mapear qualquer número real para um valor entre 0 e 1. Essa característica mostrou-se fundamental pois o método trabalha com probabilidades para predizer a melhor classe dado uma determinada amostra da base. \par
+
+Inicialmente, a Regressão Logística foi criada para resolver problemas de classificação binária. No entanto, estudos foram propostos para adapta-la a casos em que mais classes estão envolvidas. Neste trabalho, implementamos e comparamos duas dessas principais adaptações: \textit{One-vs-All} e \textit{SoftMax}.
+
 \subsection{One versus All}
+O \textit{OnevsAll} é uma estratégia que propõe o treinamento de vários classificadores diferentes de forma que, em cada um deles, uma das classes seja tida como a positiva, e as demais consideradas uma única classe negativa.\par
+Cada classificador produz um vetor de confiança onde ele salva o quanto que ele "acredita" que uma dada amostra pertença a sua classe positiva. Sendo assim, no \textit{One-vs-All}, criamos uma matriz de confiança (classes x amostra) para retornar o classificador cujo valor de certeza é maior para classificação daquela determinada amostra.\par
+Esta estratégia é muito utilizada (inclusive em outros classificadores famosos, como o SVM), mas possuí alguns problemas. Primeiramente, a escala dos valores de confiança pode acabar sendo diferente para cada classificador binário. Além disso, mesmo se a distribuição de amostras de treino for balanceada, cada classificador binário vê apenas distribuições não balanceadas visto que o conjunto de amostras negativas sempre será muito mais alto do que o de amostras positivas.
 
 \subsection{Softmax}
 
+O \textit{Softmax}, por sua vez, é uma generalização da Regressão Logística e, como o próprio nome sugere, envolve substituir a função \textit{sigmoid}, que é o núcleo da Regressão Logística tradicional, pela função \textit{softmax} definida a seguir:
+
+\begin{equation*}
+ \textit{softmax}(z)^i = \frac{e^{z^i}}{\sum\limits_{j=0}^k e^{z_k^i}  }
+\end{equation*}
+
+A equação de z já é bem conhecida dos estudos de Regressão Logística, e Linear, e consiste em multiplicar uma matriz de pesos \textbf{w} por uma matriz de \textit{features} \textbf{x}. A esse resultado se deve somar um vetor escalar \textbf{b} cujo tamanho deve ser igual ao número de classes do problema. O resultado z é aplicado à função \textit{Cross-Entropy} para calcular o valor de erro gerado pelo modelo da iteração atual.\par
+ Assim como os rótulos de \textit{Ground Truth}, aqueles que foram preditos devem estar no formato \textit{One Hot Encoding} que é umas das estratégias fundamentais para conseguirmos encontrar o resultado de um problema de multi classificação sem utilizar vários classificadores.
+
+
+
+
 \section{Redes Neurais Artificiais}
 
-	Como um exemplo de computação bio inspirada, as Redes Neurais Artificiais são uma abstração computacional para representação de um modelo cerebral. Para tanto, neurônios foram modelados por	\citeauthor{rosenblatt1957perceptron} (\citeyear{rosenblatt1957perceptron}) como perceptrons. Os perceptrons, apesar da sua abstração se assemelhar a um neurônio, seu funcionamento é igual ao de uma regressão logística: um conjunto de dados ponderados por um vetor de pesos entram em um perceptron; esses dados são combinados e submetidos à uma função de ativação; quando o valor de saída da função de ativação é maior que zero ou que um limiar escolhido, é dito que o perceptron ativou. Uma representação de um perceptron pode ser vista na Figura 1.
+	Como um exemplo de computação bio inspirada, as Redes Neurais Artificiais são uma abstração computacional para representação de um modelo cerebral. Para tanto, neurônios foram modelados como perceptrons.E seu funcionamento é igual ao de uma regressão logística: um conjunto de dados ponderados por um vetor de pesos entram em um perceptron; esses dados são combinados e submetidos à uma função de ativação; quando o valor de saída da função de ativação é maior que um limiar escolhido, é dito que o perceptron ativou. 
 	
-  \begin{figure}[!h]
-      \centering
-      \includegraphics[width=0.6\columnwidth]{images/perceptron.png}
-      \caption{Perceptron de Rosenblatt}
-      \label{fig1}
-  \end{figure}
   
-  Em linhas gerais, uma Rede Neural é um conjunto de perceptrons interconectados onde a saída de um conjunto de perceptrons é ponderada por um vetor de pesos e dada como entrada de outro conjunto de perceptrons. Essa estrutura é chamada de MLP (Perceptron multicamadas, do inglês Multi Layer Perceptron), onde cada um desses conjuntos de perceptrons é uma camada da rede.
+  Em linhas gerais, uma Rede Neural é um conjunto de perceptrons interconectados onde a saída de um conjunto de perceptrons é ponderada por um vetor de pesos e dada como entrada de outro conjunto de perceptrons. 
   
-  A camada de entrada (Input Layer) envia os dados de entrada ponderados pelos seus respectivos pesos para a camada escondida (Hidden Layer). Em sequência, cada neurônio da camada escondida combina seus valores de entrada e os submete a uma função de ativação. O resultado das ativações é ponderado por outro vetor de pesos e enviado ou a uma camada de saída (Output Layer) ou a outra camada escondida que repete o mesmo processo da camada anterior. A ativação da camada de saída é o que define a classe na qual o objeto de entrada pertence. Uma rede com muitas camadas escondidas é chamada de DNN (Rede Neural Profunda, do inglês Deep Neural Network). A efetividade da rede está em quão bom esses vetores de peso são e, portanto, o trabalho principal do algorítmo é aprender esses valores.
+  A camada de entrada (\textit{Input Layer}) envia os dados de entrada ponderados pelos seus respectivos pesos para a camada escondida (\textit{Hidden Layer}). Em seguida, cada neurônio da camada escondida combina seus valores de entrada e os submete a uma função de ativação. O resultado das ativações é ponderado por outro vetor de pesos e enviado ou a uma camada de saída (\textit{Output Layer}) ou a outra camada escondida que repete o mesmo processo da camada anterior. A ativação da camada de saída é o que define a classe na qual o objeto de entrada pertence. 
   
   A quantidade de camadas escondidas e de neurônios em cada camada pode variar dependendo da complexidade do problema. Nesse trabalho, esses hiperparâmetros foram definidos de maneira empírica, bem como o valor da constante de aprendizagem \textit{learning rate}). Os testes referêntes à escolha desses parâmetros podem ser vistos nas tabelas: Tabela 1 e Tabela 2
   
-  Assim como na regressão logística, uma Rede Neural classifica problemas binários e para resolver problemas multiclasse, utiliza-se a função softmax como função de ativação da camada de saída.
+  Assim como na regressão logística, uma Rede Neural classifica problemas binários e para resolver problemas multiclasse, utiliza-se a função \textit{softmax} como função de ativação da camada de saída.
   
-  Contudo, as MLPs só puderam ser utilizadas devido a uma técnica de aprendizagem baseado no erro retropropagado pelas camadas, proposta por \citeauthor{rumelhart1986learning} (\citeyear{rumelhart1986learning}). O problema resolvido foi o de como se atualizar os pesos das camadas mais distântes à camada de saída. O algorítmo de retropropagação baseia-se em derivadas subsequentes pela regra da cadeia, propagando o erro para as camadas mais distantes, identificando a relevância de cada peso no erro final. Isso permite que os valores dos pesos sejam alterados baseados na sua influência no erro final. Em linha gerais, o valor de um peso será alterado significantemente se o erro for alto e se esse peso foi importante no calculo da classificação que causou o erro. Essa técnica é conhecida como Backpropagation (retropropagação) e uma boa explicação do seu passo a passo pode ser vista em: https://theclevermachine.wordpress.com/2014/09/06/derivation-error-backpropagation-gradient-descent-for-neural-networks/.
+  Contudo, as MLPs só puderam ser utilizadas devido a uma técnica de aprendizagem baseado no erro retropropagado pelas camadas, proposta por \citeauthor{rumelhart1986learning} (\citeyear{rumelhart1986learning}), \textit{backpropagation}. Consiste em calcular derivadas subsequentes usando a regra da cadeia, propagando o erro para as camadas mais distantes, identificando a relevância de cada peso no erro final.
   
-  Apesar da explicação ter sido breve, o restante desse trabalho será utilizado para descrever alguns detalhes e escolhas de implementação, demonstrando os efeitos dessas escolhas nos testes realizados para escolher um modelo.
   
-\section{Funções de ativação}
-	Antes dos testes serem apresentados, faz-se necessário uma breve descrição das 3 funções de ativação implementadas: [1] sigmoid; [2] tangente hiperbólica; [3] rectified linear unit (ReLU).
+% \section{Funções de ativação}
+% 	Antes dos testes serem apresentados, faz-se necessário uma breve descrição das 3 funções de ativação implementadas: [1] sigmoid; [2] tangente hiperbólica; [3] rectified linear unit (ReLU).
 	 
-\subsection{Sigmoid}
+% \subsection{Sigmoid}
 
-	A sigmoid é primeira função a ser implementada em um perceptron, vindo de herânça da regressão logística. Ela é uma função descrita pela equação: 
+% 	A sigmoid é primeira função a ser implementada em um perceptron, vindo de herânça da regressão logística. Ela é uma função descrita pela equação: 
 
-\begin{equation}
-sigmoid(x) = \dfrac{1}{1 + e^{-x}}
-\end{equation}	
+% \begin{equation}
+% sigmoid(x) = \dfrac{1}{1 + e^{-x}}
+% \end{equation}	
 
-	O problema dessa função é que os valores de saída estão entre 0 e 1. Isso causa problemas no calculo da descida de gradiente uma vez que devido aos valores de saída serem sempre baixos, os valores dos pesos variam muito pouco nas suas atualizações. Esse problema é chamado de \textit{vanishing gradient} e pode ser vistos nesse trabalho nos testes das redes com duas camadas.
+% 	O problema dessa função é que os valores de saída estão entre 0 e 1. Isso causa problemas no calculo da descida de gradiente uma vez que devido aos valores de saída serem sempre baixos, os valores dos pesos variam muito pouco nas suas atualizações. Esse problema é chamado de \textit{vanishing gradient} e pode ser vistos nesse trabalho nos testes das redes com duas camadas.
 	
-	Para a atualização de parâmetros, a derivada dessas funções de ativação devem ser utilizadas. A derivada da sigmoid é descrita pela equação:
+% 	Para a atualização de parâmetros, a derivada dessas funções de ativação devem ser utilizadas. A derivada da sigmoid é descrita pela equação:
 	
 
-\begin{equation}
-\dfrac{d}{dx}sigmoid(x) = \dfrac{1}{1 + e^{-z}} * (1 - \dfrac{1}{1 + e^{-z}})
-\end{equation}	
+% \begin{equation}
+% \dfrac{d}{dx}sigmoid(x) = \dfrac{1}{1 + e^{-z}} * (1 - \dfrac{1}{1 + e^{-z}})
+% \end{equation}	
 
-\subsection{Tangente Hiperbólica}
+% \subsection{Tangente Hiperbólica}
   
-	A tangente hiperbólica (representada geralmente como tanh), é similar à sigmoid, mas seus valores variam entre -1 e 1. Entretanto, ela ainda apresenta o problema do \textit{vanishing gradient}. A tanh é definida pela equação:
+% 	A tangente hiperbólica (representada geralmente como tanh), é similar à sigmoid, mas seus valores variam entre -1 e 1. Entretanto, ela ainda apresenta o problema do \textit{vanishing gradient}. A tanh é definida pela equação:
   
-\begin{equation}
-tanh(x) = \dfrac{2}{1+e^{-2x}} - 1
-\end{equation}
+% \begin{equation}
+% tanh(x) = \dfrac{2}{1+e^{-2x}} - 1
+% \end{equation}
 
-	Sua derivada, utilizada no backpropagation, é definida por:
-\begin{equation}
-\dfrac{d}{dx}tanh(x) =  1 - (\dfrac{2}{1+e^{-2x}} - 1)^2
-\end{equation}	
+% 	Sua derivada, utilizada no backpropagation, é definida por:
+% \begin{equation}
+% \dfrac{d}{dx}tanh(x) =  1 - (\dfrac{2}{1+e^{-2x}} - 1)^2
+% \end{equation}	
 
-\subsection{Rectified Linear Unit (ReLU)}
+% \subsection{Rectified Linear Unit (ReLU)}
 
-	Para resolver o problema do vanishing gradient, \citeauthor{nair2010rectified} (\citeyear{nair2010rectified}) propôs a ReLU. Essa função é definida como 0 quando $x	\leq 0$ e $x$ quando $x>0$. Isso faz com que os valores tenham um peso maior no algoritmo do gradiente descendente. Sua representação matemática é:
+% 	Para resolver o problema do vanishing gradient, \citeauthor{nair2010rectified} (\citeyear{nair2010rectified}) propôs a ReLU. Essa função é definida como 0 quando $x	\leq 0$ e $x$ quando $x>0$. Isso faz com que os valores tenham um peso maior no algoritmo do gradiente descendente. Sua representação matemática é:
 	
-\begin{equation}
-ReLU(x) =  max(0,x)
-\end{equation}
+% \begin{equation}
+% ReLU(x) =  max(0,x)
+% \end{equation}
 
-	Sua derivada, utilizada na backpropagation, é 1 quando $x>0$ e 0 quando $x \leq 0$.
+% 	Sua derivada, utilizada na backpropagation, é 1 quando $x>0$ e 0 quando $x \leq 0$.
 	
 \section{Criando e escolhendo os modelos}
 
-\subsection{Regressão Logística}
+Nesta seção apresentaremos os testes realizados para cada um dos modelos criados.A análise do comportamento de cada modelo foi feita utilizando os custos finais de convergência ao variar os valores de \textit{learning rate} e o número de iterações. Além disso, após descobrir os melhores parâmetros, criamos uma tabela para mostrar as métricas de performance: Precisão, \textit{Recall}, \textit{F1-Score}. Também foram medidos o tempo de computação, em segundos, fazendo uma média de três execuções consecutivas para um mesmo modelo.
 
-\subsubsection{One versus All}
+\subsection{Regressão Logística: One versus All e Softmax}
 
-\subsubsection{Softmax}
+Quanto a Regressão Logística com \textit{softmax} podemos perceber que o crescimento do tempo de processamento foi diretamente proporcional à quantidade de iterações definidas. Quanto ao \textit{learning rate}, se consideramos o mesmo número de iterações, os valores de tempo foram maiores para valores baixos de \textit{learning rate} (LR), por alguma razão, no entanto, isso não ocorreu para 2000 iterações. Além disso, para LR igual a  0.3, a convergência do custo foi irregular, ou seja, com valores altos e baixos. O que não ocorreu nos outros dois valores. Pudemos perceber também que LR igual 0.1 convergiu para um valor menor de custo, e mais depressa. Portanto, selecionamos esse valor de \textit{learning rate} para fazer testes de performance. \par
+Analisando a tabela referente à Regressão Logística com \textit{One-vs-All}, observamos que, assim como na anterior, o número de iterações influencia diretamente no tempo gasto do treinamento.Diferente do \textit{softmax}, este método apresentou resultados melhores para o LR igual a 0.3, no entanto demorou muito mais tempo em comparação com o \textit{softmax}.
+
+\begin{table}[ht!]
+ \begin{center}
+  \caption{Performance tests for different learning rates and number of iterations (\textbf{One-vs-All})}
+  \label{table:table1}
+  \begin{tabular}{ |c|c|c|c|c| }
+   \hline
+    Iterations & Learning Rate & Convergency Cost & Time(s)\\
+   \hline
+   \multirow{}{500} & 0.3 & 0.9877 & 186.28 \\ 
+                     & 0.1 & 1.88 & 184.70 \\
+                     & 0.005 & 2.07 & 211.55 \\
+   \hline
+   \multirow{}{1000} & 0.3 & 0.9674 &376.26 \\ 
+                     & 0.1 & 0.9676 & 373.90 \\
+                     & 0.005 & 1.113 & 370.07 \\
+   \hline
+   \multirow{}{2000} & 0.3 & 0.8859 & 707.84 \\ 
+                     & 0.1 & 1.4669 & 776.09 \\
+                     & 0.005 & 1.0016 & 839.91 \\
+
+
+ \hline
+ \end{tabular}
+ \end{center}
+\end{table}
+
+
+
+\begin{table}[ht!]
+ \begin{center}
+  \caption{Performance tests for different learning rates and number of iterations (\textbf{Softmax})}
+  \label{table:table1}
+  \begin{tabular}{ |c|c|c|c|c| }
+   \hline
+    Iterations & Learning Rate & Convergency Cost & Time(s)\\
+   \hline
+   \multirow{}{500} & 0.3 & 4262.28 & 82.37 \\ 
+                     & 0.1 & 4005.46 & 88.20 \\
+                     & 0.005 & 4434.78 & 92.12 \\
+   \hline
+   \multirow{}{1000} & 0.3 & 3950.47 & 173.36\\ 
+                     & 0.1 & 3655.32 & 179.77 \\
+                     & 0.005 & 3977.04 & 180.65 \\
+   \hline
+   \multirow{}{2000} & 0.3 & 3691.28 & 306.51 \\ 
+                     & 0.1 & 3397.58 & 308.11 \\
+                     & 0.005 & 3644.95 & 289.90 \\
+
+
+ \hline
+ \end{tabular}
+ \end{center}
+\end{table}
+
+
+
+
+
+
+
 
 \subsection{Rede Neural}
 
@@ -141,13 +214,13 @@ ReLU(x) =  max(0,x)
 	
 	Após alguns testes e pesquisas, descobrimos que quando utiliza-se relu o valor inicial dos pesos não podem ser muito elevados, uma vez que esse valor não é normalizado entre $(0,1)$ ou entre $(-1,1)$ como é o caso na sigmoid e na tanh.
 	
-	Nesse cenário, os valores dos pesos foram inicializados com valores menores que $1*10^{-2}$. Com essa alteração, todas funções de ativação começaram a convergir para o mínimo e os testes puderam ser feitos. Contudo, nos testes com as redes com duas camadas e mais neurônios, a função sigmoid não convergia com pesos inicialmente baixos, devido ao problema do Vanishing Gradient, mas a tanh não apresentou problemas. Isso pode ser observado na Tabela 3.
+	Nesse cenário, os valores dos pesos foram inicializados com valores menores que $1*10^{-2}$. Com essa alteração, todas funções de ativação começaram a convergir para o mínimo e os testes puderam ser feitos. Contudo, nos testes com as redes com duas camadas e mais neurônios, a função sigmoid não convergia com pesos inicialmente baixos, devido ao problema do \textit{Vanishing Gradient}, mas a tanh não apresentou problemas. Isso pode ser observado na Tabela 3.
 	
 	Concluímos por esses testes que as funções de ativação são muito sensíveis aos valores dos pesos iniciais. Por consequência, as redes neurais são muito sensíveis à escolha dos hiperparâmetros
 
 \subsubsection{Uma camada oculta}
 	
-	A Tabela 1 mostra alguns dos testes executados. Antes desses testes o learning rate já tinha sido testados com valores menores e mostrava necessitar muitas iterações para convergir para valores próximos. Note que NHL na tabela é o número de neurônios na camada escondida.
+	A Tabela 1 mostra alguns dos testes executados. Antes desses testes o \textit{learning rate} já tinha sido testados com valores menores e mostrava necessitar muitas iterações para convergir para valores próximos. Note que NHL na tabela é o número de neurônios na camada escondida.
 	
 \begin{table}[h!]
  \begin{center}
@@ -236,11 +309,65 @@ ReLU(x) =  max(0,x)
 
 	Nesses testes, o modelo que obteve os melhores resultados foi o que utilizava ReLU, com learning rate de 0.1 e com 32 neurônios em cada camada escondida. Entretanto, devido às limitações de tempo, como já discutido acima, o melhor modelo foi o encontrado com uma camada oculta.
 	
+\newpage
 \section{Testando o modelo final no Dataset de Teste}
 
-	O modelo escolhido foi o criado a partir de uma rede com 1 hidden layer com 32 neurônio, 0.3 de learning rate e utilizando ReLU como função de ativação.	Para testar o modelo escolhido no conjunto de teste, nós retreinamos a rede com os mesmos hiperparâmetros mas utilizando todo o conjunto de trainamento. 
+Nesta seção mostraremos o resultado das métricas de validação para os métodos: Regressão Logística (One-vs-All e \textit{Softmax}) e para uma rede nural com duas camadas. Os testes de Regressão Logística com \textit{softmax} foram feitos com 2000 iterações e \textit{learning rate} igual a 0.1, valor que se mostrou mais estável e retornou os melhores resultados. Para a versão com One-vs-All, utilizamos os valores de 2000 iterações e LR igual a 0.3. Comparando as duas tabelas, foi possível com cluir que o método de One-Vs-All é um pouco melhor do que o por \textit{softmax}, no entanto, este é muito mais rápido.
+
+\begin{table}[h!]
+ \begin{center}
+  \caption{Precision, Recall e F1-Scores do Conjunto de Testes (\textbf{Softmax})}
+  \label{table:table3}
+  \begin{tabular}{ |c|c|c|c| }
+   \hline
+   Classe & Precision & Recall & F1-Score\\
+   \hline
+   0 & 0.82 & 0.77 & 0.8 \\
+   1 & 0.95 & 0.97 & 0.96 \\
+   2 & 0.73 & 0.74 & 0.74 \\
+   3 & 0.87 & 0.83 & 0.85 \\
+   4 & 0.77 & 0.72 & 0.74 \\
+   5 & 0.87 & 0.95 & 0.91 \\
+   6 & 0.56 & 0.65 & 0.6 \\
+   7 & 0.92 & 0.9 & 0.91 \\
+   8 & 0.93 & 0.94 & 0.94 \\
+   9 & 0.94 & 0.89 & 0.92 \\
+   \hline
+ \end{tabular}
+ \end{center}
+\end{table}
+
+\begin{table}[h!]
+ \begin{center}
+  \caption{Precision, Recall e F1-Scores do Conjunto de Testes (\textbf{One-vs-All})}
+  \label{table:table3}
+  \begin{tabular}{ |c|c|c|c| }
+   \hline
+   Classe & Precision & Recall & F1-Score\\
+   \hline
+   0 & 0.87 & 0.76 & 0.81 \\
+   1 & 0.95 & 0.97 & 0.96 \\
+   2 & 0.84 & 0.65 & 0.73 \\
+   3 & 0.87 & 0.82 & 0.85 \\
+   4 & 0.74 & 0.74 & 0.74 \\
+   5 & 0.91 & 0.94 & 0.93 \\
+   6 & 0.4 & 0.78 & 0.53 \\
+   7 & 0.92 & 0.9 & 0.91 \\
+   8 & 0.95 & 0.92 & 0.94 \\
+   9 & 0.95 & 0.93 & 0.94 \\
+   \hline
+ \end{tabular}
+ \end{center}
+\end{table}
+
+
+
+	O modelo final escolhido foi o criado a partir de uma rede com 1 hidden layer com 32 neurônio, 0.3 de learning rate e utilizando ReLU como função de ativação.	Para testar o modelo escolhido no conjunto de teste, nós retreinamos a rede com os mesmos hiperparâmetros mas utilizando todo o conjunto de trainamento. 
 	
 	O resultado final foi bem satisfatório em relação ao da validação, com $0.88$ de precision, $0.88$ de recall e $0.88$ de f1-score. Isso prova que o modelo não foi super treinado (overfitted). Para identificar quais classes tiveram mais problemas de classificação, geramos uma matriz de confusão e todas as métricas para cada classe individual:
+	
+	
+	
 \[
 \begin{bmatrix}
     820 & 2   & 9   & 25  & 0   & 2   & 133 & 0   & 9   & 0 \\
@@ -255,6 +382,8 @@ ReLU(x) =  max(0,x)
     0   & 0   & 0   & 0   & 0   & 13  & 0   & 33  & 2   & 952 \\
 \end{bmatrix}
 \]
+
+
 
 \begin{table}[h!]
  \begin{center}
