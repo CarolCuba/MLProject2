@@ -58,7 +58,7 @@ Inicialmente, a Regressão Logística foi criada para resolver problemas de clas
 
 \subsection{One versus All}
 O \textit{OnevsAll} é uma estratégia que propõe o treinamento de vários classificadores diferentes de forma que, em cada um deles, uma das classes seja tida como a positiva, e as demais consideradas uma única classe negativa.\par
-Cada classificador produz um vetor de confiança onde ele salva o quanto que ele "acredita" que uma dada amostra pertença a sua classe positiva. Sendo assim, no \textit{One-vs-All}, criamos uma matriz de confiança (classes x amostra) para retornar o classificador cujo valor de certeza é maior para classificação daquela determinada amostra.\par
+Cada classificador produz um vetor de confiança onde ele salva a probabilidade de uma dada amostra pertencer a determinada classe. Sendo assim, no \textit{One-vs-All}, criamos uma matriz de confiança (classes x amostra) para retornar o classificador cujo valor de certeza é maior para classificação daquela determinada amostra.\par
 Esta estratégia é muito utilizada (inclusive em outros classificadores famosos, como o SVM), mas possuí alguns problemas. Primeiramente, a escala dos valores de confiança pode acabar sendo diferente para cada classificador binário. Além disso, mesmo se a distribuição de amostras de treino for balanceada, cada classificador binário vê apenas distribuições não balanceadas visto que o conjunto de amostras negativas sempre será muito mais alto do que o de amostras positivas.
 
 \subsection{Softmax}
@@ -77,8 +77,15 @@ A equação de z já é bem conhecida dos estudos de Regressão Logística, e Li
 
 \section{Redes Neurais Artificiais}
 
-	Como um exemplo de computação bio inspirada, as Redes Neurais Artificiais são uma abstração computacional para representação de um modelo cerebral. Para tanto, neurônios foram modelados como perceptrons.E seu funcionamento é igual ao de uma regressão logística: um conjunto de dados ponderados por um vetor de pesos entram em um perceptron; esses dados são combinados e submetidos à uma função de ativação; quando o valor de saída da função de ativação é maior que um limiar escolhido, é dito que o perceptron ativou. 
+	Como um exemplo de computação bio inspirada, as Redes Neurais Artificiais são uma abstração computacional para representação de um modelo cerebral. Para tanto, neurônios foram modelados como perceptrons.E seu funcionamento é igual ao de uma regressão logística: um conjunto de dados ponderados por um vetor de pesos entram em um perceptron; esses dados são combinados e submetidos à uma função de ativação; quando o valor de saída da função de ativação é maior que um limiar escolhido, é dito que o perceptron ativou. Uma representação visual de um perceptron pode ser vista na Figura 1.
 	
+  
+  \begin{figure}[!h]
+      \centering
+      \includegraphics[width=0.6\columnwidth]{images/perceptron.png}
+      \caption{Perceptron de Rosenblatt}
+      \label{fig1}
+\end{figure}  
   
   Em linhas gerais, uma Rede Neural é um conjunto de perceptrons interconectados onde a saída de um conjunto de perceptrons é ponderada por um vetor de pesos e dada como entrada de outro conjunto de perceptrons. 
   
@@ -140,7 +147,8 @@ Nesta seção apresentaremos os testes realizados para cada um dos modelos criad
 
 \subsection{Regressão Logística: One versus All e Softmax}
 
-Quanto a Regressão Logística com \textit{softmax} podemos perceber que o crescimento do tempo de processamento foi diretamente proporcional à quantidade de iterações definidas. Quanto ao \textit{learning rate}, se consideramos o mesmo número de iterações, os valores de tempo foram maiores para valores baixos de \textit{learning rate} (LR), por alguma razão, no entanto, isso não ocorreu para 2000 iterações. Além disso, para LR igual a  0.3, a convergência do custo foi irregular, ou seja, com valores altos e baixos. O que não ocorreu nos outros dois valores. Pudemos perceber também que LR igual 0.1 convergiu para um valor menor de custo, e mais depressa. Portanto, selecionamos esse valor de \textit{learning rate} para fazer testes de performance. \par
+Quanto a Regressão Logística com \textit{softmax} podemos perceber que o crescimento do tempo de processamento foi diretamente proporcional à quantidade de iterações definidas%.Quanto ao \textit{learning rate}, se consideramos o mesmo número de iterações, os valores de tempo foram maiores para valores baixos de \textit{learning rate} (LR), por alguma razão, no entanto, isso não ocorreu para 2000 iterações
+. Além disso, para um LR igual a  0.3, a convergência do custo foi irregular, ou seja, com valores altos e baixos, mostrando que esse valor é muito alto e o algorítmo da descida do gradiente teve problemas na convergência. Esse problema não ocorreu nos outros dois valores. Pudemos perceber também que LR igual 0.1 convergiu para um valor menor de custo, e mais depressa. Portanto, selecionamos esse valor de \textit{learning rate} para fazer testes de performance. \par
 Analisando a tabela referente à Regressão Logística com \textit{One-vs-All}, observamos que, assim como na anterior, o número de iterações influencia diretamente no tempo gasto do treinamento.Diferente do \textit{softmax}, este método apresentou resultados melhores para o LR igual a 0.3, no entanto demorou muito mais tempo em comparação com o \textit{softmax}.
 
 \begin{table}[ht!]
@@ -151,15 +159,15 @@ Analisando a tabela referente à Regressão Logística com \textit{One-vs-All}, 
    \hline
     Iterations & Learning Rate & Convergency Cost & Time(s)\\
    \hline
-   \multirow{}{500} & 0.3 & 0.9877 & 186.28 \\ 
+   500 & 0.3 & 0.9877 & 186.28 \\ 
                      & 0.1 & 1.88 & 184.70 \\
                      & 0.005 & 2.07 & 211.55 \\
    \hline
-   \multirow{}{1000} & 0.3 & 0.9674 &376.26 \\ 
+   1000 & 0.3 & 0.9674 &376.26 \\ 
                      & 0.1 & 0.9676 & 373.90 \\
                      & 0.005 & 1.113 & 370.07 \\
    \hline
-   \multirow{}{2000} & 0.3 & 0.8859 & 707.84 \\ 
+   2000 & 0.3 & 0.8859 & 707.84 \\ 
                      & 0.1 & 1.4669 & 776.09 \\
                      & 0.005 & 1.0016 & 839.91 \\
 
@@ -179,15 +187,15 @@ Analisando a tabela referente à Regressão Logística com \textit{One-vs-All}, 
    \hline
     Iterations & Learning Rate & Convergency Cost & Time(s)\\
    \hline
-   \multirow{}{500} & 0.3 & 4262.28 & 82.37 \\ 
+   500 & 0.3 & 4262.28 & 82.37 \\ 
                      & 0.1 & 4005.46 & 88.20 \\
                      & 0.005 & 4434.78 & 92.12 \\
    \hline
-   \multirow{}{1000} & 0.3 & 3950.47 & 173.36\\ 
+   1000 & 0.3 & 3950.47 & 173.36\\ 
                      & 0.1 & 3655.32 & 179.77 \\
                      & 0.005 & 3977.04 & 180.65 \\
    \hline
-   \multirow{}{2000} & 0.3 & 3691.28 & 306.51 \\ 
+   2000 & 0.3 & 3691.28 & 306.51 \\ 
                      & 0.1 & 3397.58 & 308.11 \\
                      & 0.005 & 3644.95 & 289.90 \\
 
@@ -197,9 +205,59 @@ Analisando a tabela referente à Regressão Logística com \textit{One-vs-All}, 
  \end{center}
 \end{table}
 
+	Com esses resultados, o melhor modelo de Regressão Logística com \textit{softmax} foi gerado a partir de 2000 iterações e \textit{learning rate} igual a 0.1. Para a versão com One-vs-All, utilizamos os valores de 2000 iterações e LR igual a 0.3. Comparando as duas tabelas, foi possível concluir que o método de One-Vs-All é um pouco melhor do que o por \textit{softmax}, no entanto, este é muito mais rápido.
 
+\begin{table}[h!]
+ \begin{center}
+  \caption{Precision, Recall e F1-Scores do Conjunto de Validação (\textbf{Softmax})}
+  \label{table:table3}
+  \begin{tabular}{ |c|c|c|c| }
+   \hline
+   Classe & Precision & Recall & F1-Score\\
+   \hline
+   0 & 0.82 & 0.77 & 0.8 \\
+   1 & 0.95 & 0.97 & 0.96 \\
+   2 & 0.73 & 0.74 & 0.74 \\
+   3 & 0.87 & 0.83 & 0.85 \\
+   4 & 0.77 & 0.72 & 0.74 \\
+   5 & 0.87 & 0.95 & 0.91 \\
+   6 & 0.56 & 0.65 & 0.6 \\
+   7 & 0.92 & 0.9 & 0.91 \\
+   8 & 0.93 & 0.94 & 0.94 \\
+   9 & 0.94 & 0.89 & 0.92 \\
+   \hline
+ \end{tabular}
+ \end{center}
+\end{table}
 
+\begin{table}[h!]
+ \begin{center}
+  \caption{Precision, Recall e F1-Scores do Conjunto de Validação (\textbf{One-vs-All})}
+  \label{table:table3}
+  \begin{tabular}{ |c|c|c|c| }
+   \hline
+   Classe & Precision & Recall & F1-Score\\
+   \hline
+   0 & 0.87 & 0.76 & 0.81 \\
+   1 & 0.95 & 0.97 & 0.96 \\
+   2 & 0.84 & 0.65 & 0.73 \\
+   3 & 0.87 & 0.82 & 0.85 \\
+   4 & 0.74 & 0.74 & 0.74 \\
+   5 & 0.91 & 0.94 & 0.93 \\
+   6 & 0.4 & 0.78 & 0.53 \\
+   7 & 0.92 & 0.9 & 0.91 \\
+   8 & 0.95 & 0.92 & 0.94 \\
+   9 & 0.95 & 0.93 & 0.94 \\
+   \hline
+ \end{tabular}
+ \end{center}
+\end{table}
 
+	\bigskip
+	\bigskip
+	\bigskip
+	
+	Contudo, quando comparado com os resultados das Redes Neurais, os modelos gerados pelas regressões logísticas não foram melhores e, portanto, não foram escolhidos como modelos finais.
 
 
 
@@ -261,16 +319,12 @@ Analisando a tabela referente à Regressão Logística com \textit{One-vs-All}, 
 
 	Na rede com duas camadas ocultas com 16 neurônios em cada camada e learning rate 0.3, o valor dos custos a cada época não convergia sempre para o mínimo, saltando entre erros mais altos e mais baixos. Por conta disso, resolvemos experimentar com learning rates mais baixos.
 	
-	Com os learning rates menores, o valor dos custos desceu continuamente. Porém, 3000 iterações não pareceu ser o suficiente para que a rede convergisse o necessário. Dito isso, o melhor modelo provavelmente seria outro caso o tempo de execução não tivesse sido pré-determinado. Infelizmente devido à data de submissão não pudemos realizar todos testes necessários.
 	
-	O problema descrito acima ocorreu em todos testes na rede com duas camadas. Acreditamos que por conta disso as redes com uma camada escondida acabaram tendo resultados mais satisfatórios.
-	
-	Como nos testes com uma camada oculta a ReLU foi a que mais se destacou, focamos em tentar encontrar um melhor modelo para ela. Essa é a razão para os testes terem sido majoritariamente focados nessa função de ativação.
-
 \begin{table}[h!]
  \begin{center}
   \caption{Testes de Performance para NN com 2 Camadas Ocultas}
-  \label{table:table2}
+  \label{table:table6}
+  \resizebox{\columnwidth}{!}{
   \begin{tabular}{ |c|c|c|c|c|c|c|c| }
    \hline
    Ativação & LR & NHL1 & NHL2 & Precision & Recall & F1-Score & Tempo(s)\\
@@ -289,78 +343,38 @@ Analisando a tabela referente à Regressão Logística com \textit{One-vs-All}, 
 
  \hline
  \end{tabular}
+ }
  \end{center}
 \end{table}
 
 \begin{table}[h!]
  \begin{center}
   \caption{Sigmoid com Diferentes Inicializações de Pesos}
-  \label{table:table3}
+  \label{table:table7}
   \begin{tabular}{ |c|c|c|c|c|c|c|c| }
    \hline
-   Ativação & LR & NHL1 & NHL2 & Precision & Recall & F1-Score & Pesos\\
+   LR & NHL1 & NHL2 & Precision & Recall & F1-Score & Pesos\\
    \hline
-   Softmax & 0.3 & 32 & 32 & 0.85 & 0.85 & 0.85 & Altos \\
-   Softmax & 0.3 & 32 & 32 & 0.77 & 0.76 & 0.76 & Baixos \\
+   0.3 & 32 & 32 & 0.85 & 0.85 & 0.85 & Altos \\
+   0.3 & 32 & 32 & 0.77 & 0.76 & 0.76 & Baixos \\
    \hline
  \end{tabular}
  \end{center}
 \end{table}
+		
+	
+	Com os learning rates menores, o valor dos custos desceu continuamente. Porém, 3000 iterações não pareceu ser o suficiente para que a rede convergisse o necessário. Dito isso, o melhor modelo provavelmente seria outro caso o tempo de execução não tivesse sido pré-determinado. Infelizmente devido à data de submissão não pudemos realizar todos testes necessários.
+	
+
+	O problema descrito acima ocorreu em todos testes na rede com duas camadas. Acreditamos que por conta disso as redes com uma camada escondida acabaram tendo resultados mais satisfatórios.
+	
+	Como nos testes com uma camada oculta a ReLU foi a que mais se destacou, focamos em tentar encontrar um melhor modelo para ela. Essa é a razão para os testes terem sido majoritariamente focados nessa função de ativação.
+
 
 	Nesses testes, o modelo que obteve os melhores resultados foi o que utilizava ReLU, com learning rate de 0.1 e com 32 neurônios em cada camada escondida. Entretanto, devido às limitações de tempo, como já discutido acima, o melhor modelo foi o encontrado com uma camada oculta.
 	
 \newpage
 \section{Testando o modelo final no Dataset de Teste}
-
-Nesta seção mostraremos o resultado das métricas de validação para os métodos: Regressão Logística (One-vs-All e \textit{Softmax}) e para uma rede nural com duas camadas. Os testes de Regressão Logística com \textit{softmax} foram feitos com 2000 iterações e \textit{learning rate} igual a 0.1, valor que se mostrou mais estável e retornou os melhores resultados. Para a versão com One-vs-All, utilizamos os valores de 2000 iterações e LR igual a 0.3. Comparando as duas tabelas, foi possível com cluir que o método de One-Vs-All é um pouco melhor do que o por \textit{softmax}, no entanto, este é muito mais rápido.
-
-\begin{table}[h!]
- \begin{center}
-  \caption{Precision, Recall e F1-Scores do Conjunto de Testes (\textbf{Softmax})}
-  \label{table:table3}
-  \begin{tabular}{ |c|c|c|c| }
-   \hline
-   Classe & Precision & Recall & F1-Score\\
-   \hline
-   0 & 0.82 & 0.77 & 0.8 \\
-   1 & 0.95 & 0.97 & 0.96 \\
-   2 & 0.73 & 0.74 & 0.74 \\
-   3 & 0.87 & 0.83 & 0.85 \\
-   4 & 0.77 & 0.72 & 0.74 \\
-   5 & 0.87 & 0.95 & 0.91 \\
-   6 & 0.56 & 0.65 & 0.6 \\
-   7 & 0.92 & 0.9 & 0.91 \\
-   8 & 0.93 & 0.94 & 0.94 \\
-   9 & 0.94 & 0.89 & 0.92 \\
-   \hline
- \end{tabular}
- \end{center}
-\end{table}
-
-\begin{table}[h!]
- \begin{center}
-  \caption{Precision, Recall e F1-Scores do Conjunto de Testes (\textbf{One-vs-All})}
-  \label{table:table3}
-  \begin{tabular}{ |c|c|c|c| }
-   \hline
-   Classe & Precision & Recall & F1-Score\\
-   \hline
-   0 & 0.87 & 0.76 & 0.81 \\
-   1 & 0.95 & 0.97 & 0.96 \\
-   2 & 0.84 & 0.65 & 0.73 \\
-   3 & 0.87 & 0.82 & 0.85 \\
-   4 & 0.74 & 0.74 & 0.74 \\
-   5 & 0.91 & 0.94 & 0.93 \\
-   6 & 0.4 & 0.78 & 0.53 \\
-   7 & 0.92 & 0.9 & 0.91 \\
-   8 & 0.95 & 0.92 & 0.94 \\
-   9 & 0.95 & 0.93 & 0.94 \\
-   \hline
- \end{tabular}
- \end{center}
-\end{table}
-
-
 
 	O modelo final escolhido foi o criado a partir de uma rede com 1 hidden layer com 32 neurônio, 0.3 de learning rate e utilizando ReLU como função de ativação.	Para testar o modelo escolhido no conjunto de teste, nós retreinamos a rede com os mesmos hiperparâmetros mas utilizando todo o conjunto de trainamento. 
 	
